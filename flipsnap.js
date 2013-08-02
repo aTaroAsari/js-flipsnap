@@ -233,7 +233,7 @@ Flipsnap.prototype.toPrev = function(transitionDuration) {
 
 Flipsnap.prototype.moveToPoint = function(point, transitionDuration) {
   var self = this;
-  
+
   transitionDuration = transitionDuration === undefined
     ? self.transitionDuration : transitionDuration + 'ms';
 
@@ -328,6 +328,9 @@ Flipsnap.prototype._touchMove = function(event) {
   var self = this;
 
   if (!self.scrolling || gestureStart) {
+    // Hotfix for Android Chrome.
+    // Enable to receive the touchstart event after scrolling the document vertically.
+    self._eventType = null;
     return;
   }
 
@@ -350,7 +353,7 @@ Flipsnap.prototype._touchMove = function(event) {
 
     // When distX is 0, use one previous value.
     // For android firefox. When touchend fired, touchmove also
-    // fired and distX is certainly set to 0. 
+    // fired and distX is certainly set to 0.
     self.directionX =
       distX === 0 ? self.directionX :
       distX > 0 ? -1 : 1;
